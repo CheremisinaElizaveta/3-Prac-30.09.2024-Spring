@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список одежды</title>
+</head>
+<body>
+<h1>Список одежды</h1>
+
+<form action="/clothingproducts/add" method="post" th:object="${product}" >
+
+    <label for="name">Название:</label>
+
+    <input type="text" id="name" name="name" placeholder="Название" th:field="*{name}" required>
+
+    <label for="brand">Бренд:</label>
+
+    <input type="text" id="brand" name="brand" placeholder="Бренд" th:field="*{brand}" required>
+
+    <label for="category">Категория:</label>
+
+    <input type="text" id="category" name="category" placeholder="Категория" th:field="*{category}" required>
+
+    <label for="size">Размер:</label>
+
+    <input type="text" id="size" name="size" placeholder="Размер" th:field="*{size}" required>
+
+    <div th:if="${#fields.hasErrors('size')}" th:errors="*{size}">Имя не должно быть меньше чем 3 символа</div>
+
+    <label for="price">Цена:</label>
+
+    <input type="number" id="price" name="price" placeholder="Цена" th:field="*{price}" required>
+
+    <button type="submit" formmethod="post">Добавить одежду</button>
+</form>
+
+<h2>Все товары:</h2>
+<ul>
+    <th:block th:each="product : ${clothingproducts}">
+        <li>
+            <span th:text="${product.name} + ' (' + ${product.brand} + ') ' + ${product.size} + ', ' + ${product.price} + ' руб.'"></span>
+            <form action="/clothingproducts/update" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${product.id}">
+                <input type="text" name="name" th:value="${product.name}" placeholder="Название" required>
+                <input type="text" name="brand" th:value="${product.brand}" placeholder="Бренд" required>
+                <input type="text" name="category" th:value="${product.category}" placeholder="Категория" required>
+                <input type="text" name="size" th:value="${product.size}" placeholder="Размер" required>
+                <input type="number" name="price" th:value="${product.price}" placeholder="Цена" required>
+                <button type="submit" formmethod="post">Обновить</button>
+            </form>
+            <form action="/clothingproducts/delete" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${product.id}">
+                <button type="submit" formmethod="post">Удалить</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
+
+</body>
+</html>

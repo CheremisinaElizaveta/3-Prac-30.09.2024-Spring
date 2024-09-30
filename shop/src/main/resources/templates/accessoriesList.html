@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список Аксессуаров</title>
+</head>
+<body>
+<h1>Список Аксессуаров</h1>
+
+<form action="/accessories/add" method="post" th:object="${accessory}">
+
+    <label for="name">Название:</label>
+    <input type="text" id="name" name="name" placeholder="Название" th:field="*{name}" required>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Имя не должно быть меньше чем 3 символа</div>
+    <label for="brand">Бренд:</label>
+    <input type="text" id="brand" name="brand" placeholder="Бренд" th:field="*{brand}" required>
+
+    <label for="category">Категория:</label>
+    <input type="text" id="category" name="category" placeholder="Категория" th:field="*{category}" required>
+
+    <label for="material">Материал:</label>
+    <input type="text" id="material" name="material" placeholder="Материал" th:field="*{material}"  required>
+
+    <label for="color">Цвет:</label>
+    <input type="text" id="color" name="color" placeholder="Цвет" th:field="*{color}"  required>
+
+    <label for="price">Цена:</label>
+    <input type="number" id="price" name="price" placeholder="Цена" th:field="*{price}"  required>
+
+    <button type="submit" formmethod="post">Добавить Аксессуар</button>
+</form>
+
+<h2>Все Аксессуары:</h2>
+<ul>
+    <th:block th:each="accessory : ${accessories}">
+        <li>
+            <span th:text="${accessory.name} + ' (' + ${accessory.brand} + ') ' + ${accessory.category} + ', ' + ${accessory.material} + ', ' + ${accessory.color} + ', ' + ${accessory.price} + ' руб.'"></span>
+            <form action="/accessories/update" method="post" style="display:inline;" th:object="${accessory}">
+                <input type ="hidden" name="id" th:value="${accessory.id}">
+
+                <input type="text" name="name" placeholder="Название" th:field="*{name}" required>
+
+                <input type="text" name="brand" placeholder="Бренд" th:field="*{brand}" required>
+
+                <input type="text" name="category" placeholder="Категория" th:field="*{category}" required>
+
+                <input type="text" name="material" placeholder="Материал" th:field="*{material}" required>
+
+                <input type="text" name="color" placeholder="Цвет" th:field="*{color}" required>
+
+                <input type="number" name="price" placeholder="Цена" th:field="*{price}" required>
+
+                <button type="submit" formmethod="post">Обновить</button>
+            </form>
+
+            <form action="/accessories/delete" method="post" style="display:inline;">
+                <input type ="hidden" name="id" th:value="${accessory.id}">
+                <button type="submit" formmethod="post">Удалить</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
+</body>
+</html>
